@@ -1,0 +1,28 @@
+multi-client chatting system (socket)
+client : parrarel process to read incoming packet and write to another client
+
+---------------------------------------------------------------
+Server
+	-------------
+	|	    |
+	|	    |
+	|           |
+	|           |
+	-------------
+	     |	
+	     | ------ incoming connection from client -
+	     v
+	- accepting connection -
+	[ Creating a new thread ]
+	------------------
+	| waiting for incoming packet from client
+	  getClientName() - getting client name
+	  store the socket obj to sockets_list
+	  
+	 waiting for client packet
+	 -receive client packet-	
+
+------------------------------------------------------------------
+Client
+
+	
