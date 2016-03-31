@@ -19,9 +19,10 @@ class clientThread(threading.Thread):
         threading.Thread.__init__(self)
         self.conn=client_sock
         self.id=id
-        self.conn.send('You are connected')
+        self.isRun=1
+        #self.conn.send('You are connected')
     def run(self):
-        while True:
+        while True and self.isRun:
             inp=self.conn.recv(BUF_SIZE).split(' ')
             print '---> ',inp
 #            pdb.set_trace()
@@ -32,6 +33,10 @@ class clientThread(threading.Thread):
             if int(inp[0])==2: #send to all
                 message=inp[1]
                 broadcast(message)
+            if int(inp[0])==3:
+                break
+    def _stop(self):
+        self.isRun=False
 
 host='127.0.0.1'
 port=12345
@@ -39,13 +44,17 @@ port=12345
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.bind((host,port))
 s.listen(10)
-while True:
-    conn,addr= s.accept()
-    print 'got connection from ',addr
-    t_id=conn.recv(BUF_SIZE)
-    t_thread=clientThread(conn,t_id)
-    t_thread.start()
-    SOCKET_LIST.append(conn)
-    SOCKET_DICT[t_id]=conn
-    THREAD_LIST.append(t_thread)
+try:
+    while True:
+        conn,addr= s.accept()
+        print 'got connection from ',addr
+        t_id=conn.recv(BUF_SIZE)
+        t_thread=clientThread(conn,t_id)
+        t_thread.start()
+        SOCKET_LIST.append(conn)
+        SOCKET_DICT[t_id]=conn
+        THREAD_LIST.append(t_thread)
 
+except KeyboardInterrupt:
+    for c in THREAD_LIST:
+        c._stop()

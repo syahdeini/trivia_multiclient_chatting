@@ -1,7 +1,11 @@
+# trivia_multiclient_chatting
+
+A trivia project. server-multiclient chatting application.
+
+--------------------------------------------------------------------------------------
 multi-client chatting system (socket)
 client : parrarel process to read incoming packet and write to another client
-
----------------------------------------------------------------
+-------------------------------------------------------------------------------------
 Server
 	-------------------
 	|1. Server running|	    |
